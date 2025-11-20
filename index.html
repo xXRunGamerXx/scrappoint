@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scrappoint - Offizielle Website</title>
+
   <style>
     body {
       margin: 0;
@@ -29,6 +30,9 @@
       transform: translate(-50%, -50%);
       font-size: 60px;
       text-shadow: 0 0 10px black;
+      background: rgba(0,0,0,0.4);
+      padding: 10px 20px;
+      border-radius: 8px;
     }
     header .subtitle {
       position: absolute;
@@ -37,6 +41,9 @@
       transform: translateX(-50%);
       font-size: 22px;
       text-shadow: 0 0 10px black;
+      background: rgba(0,0,0,0.4);
+      padding: 6px 15px;
+      border-radius: 8px;
     }
     nav {
       background: #111;
@@ -68,7 +75,7 @@
       background: #262626;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 0 10px black;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
     .kit-grid {
       display: grid;
@@ -79,7 +86,7 @@
       background: #262626;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 0 10px #000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
       border-left: 4px solid #ff4f4f;
     }
     .btn-tebex {
@@ -104,24 +111,21 @@
       margin-top: 40px;
     }
 
-    /* Streamer Section mit Hover Overlay */
+    /* Streamer Wall */
     .streamer-img {
       position: relative;
       overflow: hidden;
       border-radius: 8px;
       margin-bottom: 10px;
     }
-
     .streamer-img img {
       width: 100%;
       display: block;
       transition: transform 0.3s ease;
     }
-
     .streamer-img:hover img {
       transform: scale(1.1);
     }
-
     .streamer-img .overlay {
       position: absolute;
       top: 0;
@@ -140,11 +144,9 @@
       transition: opacity 0.3s ease;
       border-radius: 8px;
     }
-
     .streamer-img:hover .overlay {
       opacity: 1;
     }
-
     .streamer-img .overlay a {
       color: white;
       text-decoration: none;
@@ -157,7 +159,7 @@
 <header>
   <img src="images/scrappoint-banner.jpg" alt="Scrappoint Banner">
   <div class="title">Scrappoint</div>
-  <div class="subtitle">Der deutsch/English 5× Modded Server – Fair, Stabil & Community‑orientiert</div>
+  <div class="subtitle">Der deutsch/English 5× Modded Server – Fair, Stabil & Community-orientiert</div>
 </header>
 
 <nav>
@@ -170,12 +172,11 @@
 </nav>
 
 <section id="info">
-  <h2>📌 Server‑Informationen</h2>
+  <h2>📌 Server-Informationen</h2>
   <div class="server-box">
-    <p><strong>Servername:</strong> Scrappoint 5× Modded</p>
-    <p><strong>Wipe:</strong>04.12.2025 // 19:45 MEZ/CET - Full wipe with new map. Force wipe. Runtime 1 month.</p>
-    <p><strong>Rate:</strong> 5× Ressourcen | 5× Loot</p>
-    <p><strong>Features:</strong> /home | /tpr | /shop | /skinbox | /backpack | /remove</p>
+    <p><strong>🌍 Wipe:</strong> 04.12.2025 – 19:45 CET (Force Wipe, Full Map Reset, 1 Monats-Session)</p>
+    <p><strong>⚙️ Rate:</strong> 5× Ressourcen / 5× Loot</p>
+    <p><strong>🛠️ Features:</strong> /home • /tpr • /shop • /backpack • /remove</p>
     <p><strong>IP:</strong> Connect coming soon…</p>
   </div>
 </section>
@@ -200,7 +201,7 @@
 
 <section id="donate">
   <h2>💰 Unterstütze Scrappoint</h2>
-  <p>Alle Einnahmen fließen direkt in die Server‑Refinanzierung.</p>
+  <p>Alle Einnahmen fließen direkt in die Server-Refinanzierung.</p>
   <a href="https://scrappoint.tebex.io" target="_blank" class="btn-tebex">Zu Tebex</a>
 </section>
 
@@ -222,20 +223,77 @@
 <section id="streamer">
   <h2>🎥 Streamer & Partner</h2>
   <p>Unterstütze unsere Scrappoint-Streamer und schau live zu!</p>
+
   <div class="kit-grid streamer-grid">
+
     <div class="kit">
       <div class="streamer-img">
         <img src="images/streamer1.jpg" alt="Streamer1">
-        <div class="overlay"><a href="https://www.twitch.tv/xxrungamerxxyt" target="_blank">Live ansehen</a></div>
+        <div class="overlay">
+          <a id="streamerLink" href="https://www.twitch.tv/xxrungamerxxyt" target="_blank">
+            Live ansehen
+          </a>
+        </div>
       </div>
+
       <h3>xXRunGamerXx / TheTyrone2023</h3>
+      <p id="twitchStatus" style="margin-top: 10px; font-weight: bold; color: #ff4f4f;">
+        Lade Status...
+      </p>
     </div>
+
   </div>
 </section>
 
 <footer>
-  © 2025 Scrappoint – Alle Einnahmen dienen ausschließlich zur Server‑Refinanzierung.
+  © 2025 Scrappoint – Alle Einnahmen dienen ausschließlich zur Server-Refinanzierung.
 </footer>
+
+<!-- Twitch API Script -->
+<script>
+  const clientId = "zahm49bssy9vxrdt66dwut3h6n1vus";
+  const clientSecret = "mek4hdwuudog20apig0ed3qoit62rb";
+  const streamerName = "xxrungamerxxyt";
+
+  async function getAccessToken() {
+    const response = await fetch(
+      `https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=client_credentials`,
+      { method: "POST" }
+    );
+    const data = await response.json();
+    return data.access_token;
+  }
+
+  async function checkStreamerStatus() {
+    const token = await getAccessToken();
+
+    const response = await fetch(
+      `https://api.twitch.tv/helix/streams?user_login=${streamerName}`,
+      {
+        headers: {
+          "Client-ID": clientId,
+          "Authorization": `Bearer ${token}`
+        }
+      }
+    );
+
+    const data = await response.json();
+    const statusEle = document.getElementById("twitchStatus");
+    const linkEle = document.getElementById("streamerLink");
+
+    if (data.data && data.data.length > 0) {
+      statusEle.textContent = "🟢 ONLINE – Jetzt live!";
+      statusEle.style.color = "#00ff66";
+      linkEle.textContent = "Live ansehen";
+    } else {
+      statusEle.textContent = "🔴 Offline – Nicht live";
+      statusEle.style.color = "#ff4f4f";
+      linkEle.textContent = "Twitch Profil";
+    }
+  }
+
+  checkStreamerStatus();
+</script>
 
 </body>
 </html>
